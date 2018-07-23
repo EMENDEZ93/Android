@@ -4,21 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="app.andriod.em.androidem.MainActivity"
-    tools:layout_editor_absoluteY="81dp"
-    tools:showIn="@layout/activity_main">
+    tools:context="app.andriod.em.androidem.SecondActivity">
 
-    <Button
-        android:id="@+id/buttonMain"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textViewSecondaryMain"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="206dp"
-        android:background="#E91E63"
-        android:text="Next"
-        android:textColor="#FFF"
+        android:layout_marginTop="160dp"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </android.support.constraint.ConstraintLayout>

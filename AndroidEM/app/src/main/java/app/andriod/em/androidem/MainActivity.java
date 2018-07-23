@@ -1,5 +1,6 @@
 package app.andriod.em.androidem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private Button btn;
+    private final String MESSAGE = "Android EM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Edwin Mendez", Toast.LENGTH_LONG).show();
+                //Acceder al segundo activity y enviar un String
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class );
+                intent.putExtra("MESSAGE", MESSAGE);
+                startActivity(intent);
             }
         });
     }
