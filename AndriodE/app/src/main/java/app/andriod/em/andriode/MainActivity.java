@@ -23,9 +23,22 @@ public class MainActivity extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Hilo hilo = new Hilo();
-                hilo.start();
+                //Hilo hilo = new Hilo();
+                //hilo.start();
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final String txt = "codigo desde el hilo";
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                texto.setText(txt);
+                            }
+                        });
+
+                    }
+                }).start();
 
             }
         });
@@ -33,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class Hilo extends Thread {
+    /*public class Hilo extends Thread {
         public void run(){
             for(int i=1; i <=10; i++){
                 //texto.setText(String.valueOf(i));
@@ -45,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("DEBUG", String.valueOf(i));
             }
         }
-    }
+    }*/
 
 
 }
