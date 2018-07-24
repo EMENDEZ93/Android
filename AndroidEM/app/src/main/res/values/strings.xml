@@ -6,4 +6,6 @@
     <string name="button">Button</string>
     <string name="name">Name</string>
     <string name="textvi">TextView</string>
+    <string name="todo">TODO</string>
+    <string name="nameThirdActivity">Name</string>
 </resources>
