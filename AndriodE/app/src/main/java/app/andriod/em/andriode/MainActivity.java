@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView texto;
     Button boton;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
         texto = (TextView) findViewById(R.id.texto);
         boton = (Button) findViewById(R.id.boton);
+
+        progressBar = (ProgressBar)  findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+        progressBar.setMax(100);
 
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
             for(int i=1; i < max; i++){
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -61,12 +68,17 @@ public class MainActivity extends AppCompatActivity {
             String textto = "contador " + contador;
             texto.setText(textto);
             texto.setTextSize(contador);
+
+            progressBar.setProgress(values[0]);
+
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             texto.append("\n" + s);
+
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
