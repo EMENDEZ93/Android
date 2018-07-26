@@ -28,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
         texto_rest = (TextView) findViewById(R.id.texto_rest);
         texto_rest.setMovementMethod(new ScrollingMovementMethod());
 
-                boton = (Button) findViewById(R.id.boton);
+        boton = (Button) findViewById(R.id.boton);
 
         boton_rest_action = (Button) findViewById(R.id.boton_rest_acttion);
 
         progressBar = (ProgressBar)  findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
-        progressBar.setMax(100);
+        progressBar.setVisibility(View.INVISIBLE);
+
 
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,9 +47,12 @@ public class MainActivity extends AppCompatActivity {
         boton_rest_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(int i = 0; i <= 100; i++){
+                /*for(int i = 0; i <= 100; i++){
                     cargarDatos("numero : " + i);
-                }
+                }*/
+
+                MyTask myTask  = new MyTask();
+                myTask.execute();
             }
         });
     }
@@ -57,6 +60,41 @@ public class MainActivity extends AppCompatActivity {
     public void cargarDatos(String datos){
         texto_rest.append(datos + "\n" );
     }
+
+    private class MyTask extends AsyncTask<String, String, String>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            cargarDatos("inicio de carga");
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            for(int i = 0; i <= 10; i++) {
+                publishProgress("numero : " + i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return "Terminamos.";
+        }
+
+        @Override
+        protected void onPostExecute(String dato) {
+            super.onPostExecute(dato);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            cargarDatos(values[0]);
+        }
+    }
+
 
 
     public class MyAsyncTask extends AsyncTask<Integer, Integer, String>{
