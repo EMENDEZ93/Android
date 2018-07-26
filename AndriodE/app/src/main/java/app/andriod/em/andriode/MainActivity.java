@@ -17,6 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.andriod.em.andriode.pojo.Usuario;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView texto;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Button boton_rest_action;
     ProgressBar progressBar;
     List<MyTask> taskList;
+    List<Usuario> usuarioList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
