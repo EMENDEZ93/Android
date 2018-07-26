@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 }*/
 
                 MyTask myTask  = new MyTask();
-                myTask.execute();
+                myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
     }
