@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.andriod.em.andriode.parsers.UsuarioXMLParser;
 import app.andriod.em.andriode.pojo.Usuario;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,8 +73,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void cargarDatos(String datos){
-        texto_rest.append(datos + "\n" );
+    public void cargarDatos(){
+        //texto_rest.append(datos + "\n" );
+        if(usuarioList != null){
+            for (Usuario usuario : usuarioList) {
+                texto_rest.append(usuario.getNombre() + "\n");
+            }
+
+
+        }
+
     }
 
     public void pedirDatos(String uri){
@@ -102,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            cargarDatos("inicio de carga");
+            //cargarDatos("inicio de carga");
 
             if(taskList.size() == 0){
                 progressBar.setVisibility(View.VISIBLE);
@@ -134,17 +143,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String dato) {
-            super.onPostExecute(dato);
-            taskList.remove(this);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            usuarioList = UsuarioXMLParser.parser(result);
+
+            cargarDatos();
+            progressBar.setVisibility(View.INVISIBLE);
+
+            /*taskList.remove(this);
             if(taskList.size() == 0){
                 progressBar.setVisibility(View.INVISIBLE);
-            }
+            }*/
         }
 
         @Override
         protected void onProgressUpdate(String... values) {
-            cargarDatos(values[0]);
+            //cargarDatos(values[0]);
         }
     }
 
