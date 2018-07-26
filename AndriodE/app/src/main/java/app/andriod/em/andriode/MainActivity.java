@@ -1,5 +1,8 @@
 package app.andriod.em.andriode;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
                     cargarDatos("numero : " + i);
                 }*/
 
-                MyTask myTask  = new MyTask();
-                myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                if(isOnline() == true){
+                    pedirDatos();
+                }else {
+                    Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -65,6 +72,26 @@ public class MainActivity extends AppCompatActivity {
     public void cargarDatos(String datos){
         texto_rest.append(datos + "\n" );
     }
+
+
+    public void pedirDatos(){
+        MyTask myTask  = new MyTask();
+        myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public boolean isOnline(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnectedOrConnecting()){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
     private class MyTask extends AsyncTask<String, String, String>{
 
