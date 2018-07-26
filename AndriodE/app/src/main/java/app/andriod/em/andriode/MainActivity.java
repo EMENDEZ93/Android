@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView texto;
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Button boton;
     Button boton_rest_action;
     ProgressBar progressBar;
+    List<MyTask> taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = (ProgressBar)  findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
+        taskList = new ArrayList<>();
 
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +72,11 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             cargarDatos("inicio de carga");
-            progressBar.setVisibility(View.VISIBLE);
+
+            if(taskList.size() == 0){
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            taskList.add(this);
         }
 
         @Override
@@ -86,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String dato) {
             super.onPostExecute(dato);
-            progressBar.setVisibility(View.INVISIBLE);
+            taskList.remove(this);
+            if(taskList.size() == 0){
+                progressBar.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
