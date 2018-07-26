@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 }*/
 
                 if(isOnline() == true){
-                    pedirDatos();
+                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
                 }else {
                     Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
                 }
@@ -73,10 +73,11 @@ public class MainActivity extends AppCompatActivity {
         texto_rest.append(datos + "\n" );
     }
 
+    public void pedirDatos(String uri){
 
-    public void pedirDatos(){
         MyTask myTask  = new MyTask();
-        myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        myTask.execute(uri);
     }
 
     public boolean isOnline(){
@@ -106,17 +107,27 @@ public class MainActivity extends AppCompatActivity {
             taskList.add(this);
         }
 
+        /*@Override
+        //protected String doInBackground(String... strings) {
+        //    /*for(int i = 0; i <= 10; i++) {
+        //        publishProgress("numero : " + i);
+        //        try {
+        //            Thread.sleep(1000);
+        //        } catch (InterruptedException e) {
+        //            e.printStackTrace();
+        //        }
+        //    }*/
+        //    String content = HttpManager.getData(strings[0]);
+        //    return content;
+        //}
+
+
         @Override
         protected String doInBackground(String... strings) {
-            for(int i = 0; i <= 10; i++) {
-                publishProgress("numero : " + i);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            return "Terminamos.";
+            String content = HttpManager.getData(strings[0]);
+            publishProgress(content);
+            //texto_rest.append(content);
+            return content;
         }
 
         @Override
