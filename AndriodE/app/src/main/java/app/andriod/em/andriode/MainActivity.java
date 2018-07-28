@@ -67,7 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if(isOnline() == true){
                     //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
-                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
+                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
+
+                    //url con seguridad
+                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
                 }else {
                     Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
                 }
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            String content = HttpManager.getData(strings[0]);
+            String content = HttpManager.getData(strings[0], "pepito", "pepito");
             publishProgress(content);
             //texto_rest.append(content);
             return content;
@@ -149,8 +152,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            usuarioList = UsuarioJSONParser.parser(result);
 
+            if(result == null){
+                Toast.makeText(MainActivity.this, "no se pudo conectar", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
+                return;
+            }
+
+            usuarioList = UsuarioJSONParser.parser(result);
             cargarDatos();
             progressBar.setVisibility(View.INVISIBLE);
 
