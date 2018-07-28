@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.andriod.em.andriode.parsers.UsuarioJSONParser;
 import app.andriod.em.andriode.parsers.UsuarioXMLParser;
 import app.andriod.em.andriode.pojo.Usuario;
 
@@ -65,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 }*/
 
                 if(isOnline() == true){
-                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
+                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
+                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
                 }else {
                     Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
                 }
@@ -77,7 +79,9 @@ public class MainActivity extends AppCompatActivity {
         //texto_rest.append(datos + "\n" );
         if(usuarioList != null){
             for (Usuario usuario : usuarioList) {
-                texto_rest.append(usuario.getNombre() + "\n");
+                texto_rest.append(usuario.getUsariosId()+ " - " +
+                                  usuario.getNombre() + " - " +
+                                  usuario.getTwitter() + "\n");
             }
 
 
@@ -145,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            usuarioList = UsuarioXMLParser.parser(result);
+            usuarioList = UsuarioJSONParser.parser(result);
 
             cargarDatos();
             progressBar.setVisibility(View.INVISIBLE);
