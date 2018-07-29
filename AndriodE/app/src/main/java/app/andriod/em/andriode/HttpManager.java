@@ -10,10 +10,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import app.andriod.em.andriode.pojo.RequestPackage;
+
 public class HttpManager {
 
-    public static String getData(String uri){
+    public static String getData(RequestPackage requestPackage){
         BufferedReader reader = null;
+        String uri = requestPackage.getUrl();
+
+        if(requestPackage.getMethod().equals("GET")){
+            uri += "?" + requestPackage.getEncodeParams();
+        }
 
         try {
             URL url = new URL(uri);

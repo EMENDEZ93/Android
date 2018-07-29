@@ -24,6 +24,7 @@ import app.andriod.em.andriode.adapters.MyAdapter;
 import app.andriod.em.andriode.adapters.UsuariosAdapter;
 import app.andriod.em.andriode.parsers.UsuarioJSONParser;
 import app.andriod.em.andriode.parsers.UsuarioXMLParser;
+import app.andriod.em.andriode.pojo.RequestPackage;
 import app.andriod.em.andriode.pojo.Usuario;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,31 +35,27 @@ public class MainActivity extends AppCompatActivity {
     Button boton_rest_action;
     ProgressBar progressBar;
     List<MyTask> taskList;
-    List<Usuario> usuarioList;
+    //List<Usuario> usuarioList;
 
     //ListView listView;
     //MyAdapter adapter;
 
-    RecyclerView recyclerView;
-    UsuariosAdapter adapter;
+    //RecyclerView recyclerView;
+    //UsuariosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // texto = (TextView) findViewById(R.id.texto);
+        texto = (TextView) findViewById(R.id.texto);
+        texto_rest = (TextView) findViewById(R.id.texto_rest);
+        texto_rest.setMovementMethod(new ScrollingMovementMethod());
 
-       // texto_rest = (TextView) findViewById(R.id.texto_rest);
-        // texto_rest.setMovementMethod(new ScrollingMovementMethod());
-
-
-        //  boton = (Button) findViewById(R.id.boton);
-
-        // boton_rest_action = (Button) findViewById(R.id.boton_rest_acttion);
-
-        // progressBar = (ProgressBar)  findViewById(R.id.progressBar);
-        //  progressBar.setVisibility(View.INVISIBLE);
+        boton = (Button) findViewById(R.id.boton);
+        boton_rest_action = (Button) findViewById(R.id.boton_rest_acttion);
+        progressBar = (ProgressBar)  findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         taskList = new ArrayList<>();
 
@@ -72,46 +69,46 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        //recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        //linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        //recyclerView.setLayoutManager(linearLayoutManager);
 
 
-        if(isOnline() == true){
-            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
-            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
-            pedirDatos("http://maloschistes.com/maloschistes.com/jose/webserviceI.php");
-            //url con seguridad
-            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
-        }else {
-            Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
-        }
+        //if(isOnline() == true){
+        //    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
+        //    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
+        //    pedirDatos("http://maloschistes.com/maloschistes.com/jose/webserviceI.php");
+        //    //url con seguridad
+        //    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
+        //}else {
+        //    Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
+        //}
 
 
-        //boton_rest_action.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        /*for(int i = 0; i <= 100; i++){
-        //            cargarDatos("numero : " + i);
-        //        }*/
-        //
-        //        if(isOnline() == true){
-        //            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
-        //            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
-        //            pedirDatos("http://maloschistes.com/maloschistes.com/jose/webserviceI.php");
-        //
-        //            //url con seguridad
-        //            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
-        //        }else {
-        //            Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
-        //        }
-        //    }
-        //});
+        boton_rest_action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*for(int i = 0; i <= 100; i++){
+                    cargarDatos("numero : " + i);
+                }*/
+
+                if(isOnline()){
+                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
+                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
+                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservicesend.php");
+
+                    //url con seguridad
+                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
+                }else {
+                    Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    public void cargarDatos(){
-        //texto_rest.append(datos + "\n" );
+    public void cargarDatos(String datos){
+        texto_rest.append(datos + "\n" );
         //if(usuarioList != null){
         //    for (Usuario usuario : usuarioList) {
         //        texto_rest.append(usuario.getUsariosId()+ " - " +
@@ -120,17 +117,26 @@ public class MainActivity extends AppCompatActivity {
         //    }
         //}
 
-        adapter = new UsuariosAdapter(getApplicationContext(), usuarioList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
+        //adapter = new UsuariosAdapter(getApplicationContext(), usuarioList);
+        //recyclerView.setAdapter(adapter);
+        //recyclerView.setHasFixedSize(true);
 
     }
 
     public void pedirDatos(String uri){
 
         MyTask myTask  = new MyTask();
+        RequestPackage requestPackage = new RequestPackage();
+        requestPackage.setMethod("GET");
+        requestPackage.setUrl(uri);
+        requestPackage.setParams("parametro1", "valor1");
+        requestPackage.setParams("parametro2", "valor2");
+        requestPackage.setParams("parametro3", "valor3");
+        requestPackage.setParams("parametro4", "valor4");
+        requestPackage.setParams("parametro5", "valor5");
+        requestPackage.setParams("parametro6", "valor6");
         //myTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        myTask.execute(uri);
+        myTask.execute(requestPackage);
     }
 
     public boolean isOnline(){
@@ -147,16 +153,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class MyTask extends AsyncTask<String, String, String>{
+    private class MyTask extends AsyncTask<RequestPackage, String, String>{
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             //cargarDatos("inicio de carga");
 
-            //if(taskList.size() == 0){
-            //    progressBar.setVisibility(View.VISIBLE);
-            //}
+            if(taskList.size() == 0) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
             taskList.add(this);
         }
 
@@ -176,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected String doInBackground(RequestPackage... strings ) {
             //String content = HttpManager.getData(strings[0], "pepito", "pepito");
             String content = HttpManager.getData(strings[0]);
             publishProgress(content);
@@ -194,8 +200,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            usuarioList = UsuarioJSONParser.parser(result);
-            cargarDatos();
+            //usuarioList = UsuarioJSONParser.parser(result);
+            cargarDatos(result);
             //progressBar.setVisibility(View.INVISIBLE);
 
             /*taskList.remove(this);
