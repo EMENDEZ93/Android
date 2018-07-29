@@ -3,4 +3,6 @@
     <string name="iniciar_hilo">Iniciar Hilo</string>
     <string name="action_rest">action rest</string>
     <string name="api">API</string>
+    <string name="todo">TODO</string>
+    <string name="hola_mundo">hola mundo</string>
 </resources>

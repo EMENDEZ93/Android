@@ -10,6 +10,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.andriod.em.andriode.adapters.MyAdapter;
 import app.andriod.em.andriode.parsers.UsuarioJSONParser;
 import app.andriod.em.andriode.parsers.UsuarioXMLParser;
 import app.andriod.em.andriode.pojo.Usuario;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     List<MyTask> taskList;
     List<Usuario> usuarioList;
+
+    ListView listView;
+    MyAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        listView = (ListView) findViewById(R.id.listview);
 
         boton_rest_action.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if(isOnline() == true){
                     //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
-                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
+                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
 
                     //url con seguridad
-                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
+                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
                 }else {
                     Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
                 }
@@ -80,16 +86,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void cargarDatos(){
         //texto_rest.append(datos + "\n" );
-        if(usuarioList != null){
-            for (Usuario usuario : usuarioList) {
-                texto_rest.append(usuario.getUsariosId()+ " - " +
-                                  usuario.getNombre() + " - " +
-                                  usuario.getTwitter() + "\n");
-            }
+        //if(usuarioList != null){
+        //    for (Usuario usuario : usuarioList) {
+        //        texto_rest.append(usuario.getUsariosId()+ " - " +
+        //                          usuario.getNombre() + " - " +
+        //                          usuario.getTwitter() + "\n");
+        //    }
+        //}
 
-
-        }
-
+        adapter = new MyAdapter(getApplicationContext(), usuarioList);
+        listView.setAdapter(adapter);
     }
 
     public void pedirDatos(String uri){
@@ -143,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            String content = HttpManager.getData(strings[0], "pepito", "pepito");
+            //String content = HttpManager.getData(strings[0], "pepito", "pepito");
+            String content = HttpManager.getData(strings[0]);
             publishProgress(content);
             //texto_rest.append(content);
             return content;
