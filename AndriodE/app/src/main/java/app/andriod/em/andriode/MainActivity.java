@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyTask myTask  = new MyTask();
         RequestPackage requestPackage = new RequestPackage();
-        requestPackage.setMethod("GET");
+        requestPackage.setMethod("POST");
         requestPackage.setUrl(uri);
         requestPackage.setParams("parametro1", "valor1");
         requestPackage.setParams("parametro2", "valor2");

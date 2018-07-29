@@ -6,6 +6,8 @@ import android.util.Base64;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,6 +27,15 @@ public class HttpManager {
         try {
             URL url = new URL(uri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(requestPackage.getMethod());
+
+            if(requestPackage.getMethod().equals("POST")){
+                connection.setDoInput(true);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
+                outputStreamWriter.write(requestPackage.getEncodeParams());
+                outputStreamWriter.flush();
+            }
+
             StringBuilder stringBuilder = new StringBuilder();
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
