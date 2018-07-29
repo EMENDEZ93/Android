@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new UsuariosAdapter(getApplicationContext(), usuarioList);
         recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+
     }
 
     public void pedirDatos(String uri){
