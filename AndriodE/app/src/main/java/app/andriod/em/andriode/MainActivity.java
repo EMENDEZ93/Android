@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.andriod.em.andriode.adapters.MyAdapter;
+import app.andriod.em.andriode.adapters.UsuariosAdapter;
 import app.andriod.em.andriode.parsers.UsuarioJSONParser;
 import app.andriod.em.andriode.parsers.UsuarioXMLParser;
 import app.andriod.em.andriode.pojo.Usuario;
@@ -33,55 +36,78 @@ public class MainActivity extends AppCompatActivity {
     List<MyTask> taskList;
     List<Usuario> usuarioList;
 
-    ListView listView;
-    MyAdapter adapter;
+    //ListView listView;
+    //MyAdapter adapter;
+
+    RecyclerView recyclerView;
+    UsuariosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        texto = (TextView) findViewById(R.id.texto);
+       // texto = (TextView) findViewById(R.id.texto);
 
-        texto_rest = (TextView) findViewById(R.id.texto_rest);
-        texto_rest.setMovementMethod(new ScrollingMovementMethod());
+       // texto_rest = (TextView) findViewById(R.id.texto_rest);
+        // texto_rest.setMovementMethod(new ScrollingMovementMethod());
 
-        boton = (Button) findViewById(R.id.boton);
 
-        boton_rest_action = (Button) findViewById(R.id.boton_rest_acttion);
+        //  boton = (Button) findViewById(R.id.boton);
 
-        progressBar = (ProgressBar)  findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
+        // boton_rest_action = (Button) findViewById(R.id.boton_rest_acttion);
+
+        // progressBar = (ProgressBar)  findViewById(R.id.progressBar);
+        //  progressBar.setVisibility(View.INVISIBLE);
 
         taskList = new ArrayList<>();
 
-        boton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MyAsyncTask().execute(100);
-            }
-        });
+        //boton.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        new MyAsyncTask().execute(100);
+        //    }
+        //});
 
-        listView = (ListView) findViewById(R.id.listview);
 
-        boton_rest_action.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*for(int i = 0; i <= 100; i++){
-                    cargarDatos("numero : " + i);
-                }*/
 
-                if(isOnline() == true){
-                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
-                    pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
 
-                    //url con seguridad
-                    //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
-                }else {
-                    Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+
+        if(isOnline() == true){
+            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
+            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
+            pedirDatos("http://maloschistes.com/maloschistes.com/jose/webserviceI.php");
+            //url con seguridad
+            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
+        }else {
+            Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
+        }
+
+
+        //boton_rest_action.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        /*for(int i = 0; i <= 100; i++){
+        //            cargarDatos("numero : " + i);
+        //        }*/
+        //
+        //        if(isOnline() == true){
+        //            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/usuarios.xml");
+        //            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/webservice.php");
+        //            pedirDatos("http://maloschistes.com/maloschistes.com/jose/webserviceI.php");
+        //
+        //            //url con seguridad
+        //            //pedirDatos("http://maloschistes.com/maloschistes.com/jose/s/webservice.php");
+        //        }else {
+        //            Toast.makeText(getApplicationContext(),"Sin conexion", Toast.LENGTH_SHORT).show();
+        //        }
+        //    }
+        //});
     }
 
     public void cargarDatos(){
@@ -94,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
         //    }
         //}
 
-        adapter = new MyAdapter(getApplicationContext(), usuarioList);
-        listView.setAdapter(adapter);
+        adapter = new UsuariosAdapter(getApplicationContext(), usuarioList);
+        recyclerView.setAdapter(adapter);
     }
 
     public void pedirDatos(String uri){
@@ -126,9 +152,9 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
             //cargarDatos("inicio de carga");
 
-            if(taskList.size() == 0){
-                progressBar.setVisibility(View.VISIBLE);
-            }
+            //if(taskList.size() == 0){
+            //    progressBar.setVisibility(View.VISIBLE);
+            //}
             taskList.add(this);
         }
 
@@ -162,13 +188,13 @@ public class MainActivity extends AppCompatActivity {
 
             if(result == null){
                 Toast.makeText(MainActivity.this, "no se pudo conectar", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.INVISIBLE);
+                //progressBar.setVisibility(View.INVISIBLE);
                 return;
             }
 
             usuarioList = UsuarioJSONParser.parser(result);
             cargarDatos();
-            progressBar.setVisibility(View.INVISIBLE);
+            //progressBar.setVisibility(View.INVISIBLE);
 
             /*taskList.remove(this);
             if(taskList.size() == 0){
@@ -189,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
+            //progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -217,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
             texto.setText(textto);
             texto.setTextSize(contador);
 
-            progressBar.setProgress(values[0]);
+            //progressBar.setProgress(values[0]);
 
         }
 
@@ -226,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             texto.append("\n" + s);
 
-            progressBar.setVisibility(View.INVISIBLE);
+            //progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
